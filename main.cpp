@@ -15,32 +15,21 @@
 double convert(std::string myData, double factor){
 	double value;
 
+	// why should this start at 3??????? super-mysterious-devil-character-which-is-actually-two-characters?
+	//std::string s = ; 
+	myData = myData.substr(3,myData.size());
 
-	int starpos = myData.find("*");
+	if(myData.find("/") != std::string::npos){ //the string contains /, meaning that it is a fraction
+		int slashpos = myData.find("/");
+    	int numerator = std::stoi(myData.substr(0,slashpos));
+    	int denominator = std::stoi(myData.substr(slashpos+1));
 
-	std::string newdata = myData.substr(starpos + 1); 
-	int slashpos = myData.find("/");
-
-	if(slashpos != std::string::npos){ //contains /
-		std::string num = newdata.substr(0,1);
-		std::string den = newdata.substr(slashpos);
-
-		//std::cout << "den: " << den << " num: " << num << std::endl;
-    	int numerator = std::stoi(num);
-    	int denominator = std::stoi(den);
-    	double original = numerator/(double)denominator;
-    	//std::cout << "original: " << original << std::endl;
-
-		value = factor * original;
-
+    	value = factor * numerator/(double)denominator;
 	}
 	else{
-    	int original = std::stoi(newdata);
-    	value = factor * original;
-
+		value = factor * std::stoi(myData);
 	}
 	return value;
-
 }
 
 int main(int argc, char* argv[]) {
@@ -119,7 +108,6 @@ int main(int argc, char* argv[]) {
 	}
 
 	originalServings = stoi(allData[1]);
-	std::cout << originalServings << std::endl;
 
 	
 	for(int i = 0; i < allData.size(); i++){
@@ -129,10 +117,14 @@ int main(int argc, char* argv[]) {
 		
 		if(insideIngredients && allData[i].find("*") != std::string::npos){
 			outFile << "  * " << convert(allData[i],servings/(double)originalServings) << " ";
-			allData.erase(allData.begin() + i);
-			
+			allData.erase(allData.begin() + i);	
 		}
-
+		if(allData[i+4] == "votes"){
+			allData.erase(allData.begin() + i + 4);
+			allData.erase(allData.begin() + i + 3);
+			allData.erase(allData.begin() + i + 2);
+			allData.erase(allData.begin() + i + 1);
+		}
 		if(allData[i] == "Prep" && !prepFound){
 			outFile << std::endl << std::endl << "  ";
 			prepFound = true;
@@ -164,11 +156,12 @@ int main(int argc, char* argv[]) {
 			outFile << " ";
 		}
 		if(allData[i] == "Yield:"){
-			std::cout << "here" << std::endl;
 			allData[i+1] = std::to_string(servings);
 		}
 
+//===================== this is the important part =======================
 		outFile << allData[i] << " ";
+//========================================================================
 
 
 		if(insideIngredients && allData[i].find(":") != std::string::npos){
@@ -192,15 +185,8 @@ int main(int argc, char* argv[]) {
 			outFile << std::endl << std::endl;
 			nutritionFound = true;
 			allData[i+1].erase();
-
 		}
-
-		
-
-
 	}
-
-
 	return 0;
 }
 
@@ -219,4 +205,6 @@ int main(int argc, char* argv[]) {
 
 //sudo apt-get install elinks
 //elinks -dump -no-numbering -no-references a.html > original_recipe_file.txt
+//elinks -dump -no-numbering -no-references https://www.skinnytaste.com/wprm_print/49040 > original_recipe_file.txt
+
 
