@@ -10,7 +10,7 @@
 //"* 2"
 //"* 1/2"
 
-// do all the math to find the ideal ingredient amounts, and add that to the output file
+// do all the math to find the ideal ingredient amounts, and add that to the output file.
 
 double convert(std::string myData, double factor){
 	double value;
