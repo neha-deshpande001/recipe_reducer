@@ -6,17 +6,11 @@
 #include <string>
 
 
-
-//"* 2"
-//"* 1/2"
-
-// do all the math to find the ideal ingredient amounts, and add that to the output file
-
+//This function converts an input string (ex. "* 1" or "* 1/4"), converts it into an integer, then changes the yield size.
 double convert(std::string myData, double factor){
 	double value;
 
-	// why should this start at 3??????? super-mysterious-devil-character-which-is-actually-two-characters?
-	//std::string s = ; 
+	//The space between * and 1 is actually a no-break space, so the actual number starts at index 3, not 2
 	myData = myData.substr(3,myData.size());
 
 	if(myData.find("/") != std::string::npos){ //the string contains /, meaning that it is a fraction
@@ -26,7 +20,7 @@ double convert(std::string myData, double factor){
 
     	value = factor * numerator/(double)denominator;
 	}
-	else{
+	else{ // whole number
 		value = factor * std::stoi(myData);
 	}
 	return value;
@@ -84,7 +78,7 @@ int main(int argc, char* argv[]) {
 	  			}
 	  			instructionsFound = true;
 	  		}
-	  		if(data == "Blue"){
+	  		if(data == "Blue"){ //transfer only the important parts of the input file
 	  			saveString = false;
 	  		}
 	    	if(saveString && data != "Serving:"){
@@ -97,33 +91,43 @@ int main(int argc, char* argv[]) {
 	    }
 	    inFile.close();
 	}
-	else{ // If the file cannot be opened, it throws an error message
+	else{ // If the input file cannot be opened, it throws an error message
 	    std::cerr << "Unable to open input file." << std::endl;
 	    exit(1);
 	}
 
-	if(!outFile.is_open()){
+	if(!outFile.is_open()) {// If the output file cannot be opened, it throws an error message
 		std::cerr << "Unable to open output file." << std::endl;
 		exit(2);
 	}
 
+	//save how many servings the original recipe is written for
 	originalServings = stoi(allData[1]);
 
 	
+	// now go through everything, eliminating unnecessary detail
 	for(int i = 0; i < allData.size(); i++){
 		if(allData[i].find("*") != std::string::npos) {
 			outFile << std::endl << "    ";
 		}
-		
+		// change the recipe's serving amount
 		if(insideIngredients && allData[i].find("*") != std::string::npos){
-			outFile << "  * " << convert(allData[i],servings/(double)originalServings) << " ";
-			allData.erase(allData.begin() + i);	
+			if(allData[i].find_first_of("0123456789") != std::string::npos){
+				outFile << "  * " << convert(allData[i],servings/(double)originalServings) << " ";
+				allData.erase(allData.begin() + i);	
+			}
+			else{
+				outFile << "  ";
+			}
 		}
-		if(allData[i+4] == "votes"){
+		if(allData[i+4] == "votes" || allData[i+4] == "vote"){
 			allData.erase(allData.begin() + i + 4);
 			allData.erase(allData.begin() + i + 3);
 			allData.erase(allData.begin() + i + 2);
 			allData.erase(allData.begin() + i + 1);
+		}
+		if(allData[i] == "* Divide"){
+			allData[i+2] = std::to_string(servings);
 		}
 		if(allData[i] == "Prep" && !prepFound){
 			outFile << std::endl << std::endl << "  ";
@@ -159,7 +163,7 @@ int main(int argc, char* argv[]) {
 			allData[i+1] = std::to_string(servings);
 		}
 
-//===================== this is the important part =======================
+//===================== print to the output file =========================
 		outFile << allData[i] << " ";
 //========================================================================
 
@@ -172,7 +176,6 @@ int main(int argc, char* argv[]) {
 		}
 		if(allData[i] == "servings"){
 			outFile << std::endl << std::endl;
-			//words.insert(std::make_pair("servings",true));
 		}
 		if(allData[i] == "Ingredients"){
 			outFile << std::endl;
@@ -189,22 +192,3 @@ int main(int argc, char* argv[]) {
 	}
 	return 0;
 }
-
-
-
-//std::stoi("1/4") //1
-//std::stoi("/4") //error
-
-
-//this programa ssumes that all the input recipe files are correct
-
-//the below converts 
-
-//http://elinks.or.cz/documentation/manpages/elinks.conf.5.html#document.dump.color_mode
-//http://elinks.or.cz/documentation/manpages/elinks.1.html
-
-//sudo apt-get install elinks
-//elinks -dump -no-numbering -no-references a.html > original_recipe_file.txt
-//elinks -dump -no-numbering -no-references https://www.skinnytaste.com/wprm_print/49040 > original_recipe_file.txt
-
-
