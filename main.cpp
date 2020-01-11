@@ -13,13 +13,24 @@
 // do all the math to find the ideal ingredient amounts, and add that to the output file.
 
 double convert(std::string myData, double factor){
-	double value;
+	double value = 1;
+	int slashpos = myData.find("/");
 
+	if(slashpos != std::string::npos){ //contains /, meaning that it is a fraction
 
-	int starpos = myData.find("*");
+	}
+	else{
+		std::string s = myData.substr(2,myData.size());
+		std::cout << "s: \"" << s << "\"" << std::endl;
+
+		int original = std::stoi(myData.substr(2,myData.size()));
+	}
+
+/*
+	int starpos = myData.find(" ");
+	std::cout << "starpos" << starpos << std::endl;
 
 	std::string newdata = myData.substr(starpos + 1); 
-	int slashpos = myData.find("/");
 
 	if(slashpos != std::string::npos){ //contains /
 		std::string num = newdata.substr(0,1);
@@ -38,7 +49,7 @@ double convert(std::string myData, double factor){
     	int original = std::stoi(newdata);
     	value = factor * original;
 
-	}
+	}*/
 	return value;
 
 }
@@ -61,21 +72,21 @@ int main(int argc, char* argv[]) {
 
 	// parse the arguments
   	for (int i = 1; i < argc; i++) {
-    	if (argv[i] == std::string("-i")) {
-      		i++;
-      		assert (i < argc);
-      		input_file = argv[i];
-    	}
-    	else if (argv[i] == std::string("-o")) {
-      		i++;
-      		assert (i < argc);
-      		output_file = argv[i];
-    	}
-    	else if (argv[i] == std::string("-servings")) {
-      		i++;
-      		assert (i < argc);
-      		servings = std::stoi(argv[i]);
-    	}
+		if (argv[i] == std::string("-i")) {
+			i++;
+			assert (i < argc);
+			input_file = argv[i];
+		}
+		else if (argv[i] == std::string("-o")) {
+			i++;
+			assert (i < argc);
+			output_file = argv[i];
+		}
+		else if (argv[i] == std::string("-servings")) {
+			i++;
+			assert (i < argc);
+			servings = std::stoi(argv[i]);
+		}
   	}
 
 	// convert the strings to input and output files
