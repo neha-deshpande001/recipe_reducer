@@ -27,9 +27,8 @@ sudo apt-get install elinks
 2. Find the recipe that you want to reduce from [SkinnyTaste.com](https://www.skinnytaste.com/)
 
 3. Right click the black "PRINT" on the recipe button and click "Copy link address"
-``` 
-insert screenshot here
-```
+<img src="screenshots/print_button.png" width="415" align="left">
+<p><img src="screenshots/right_click.png" width="415" align="right"><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 4. Convert .html file to a .txt file using ELinks
 ``` 
@@ -49,7 +48,7 @@ g++ main.cpp -o main.out
 ```
 
 ## Example
-I want to cook a salad for myself and my brother (2 people). First, I would find the recipe on skinnytaste.com. However, I realize that the original recipe is for 4 servings, but I only want to cook 2 servings. Rather than manually changing the amount of each ingredient, I would instead convert the recipe using the Recipe Reducer.
+I want to make a salad for myself and my brother (2 servings). First, I would find the recipe on skinnytaste.com. However, I realize that the original recipe is for 4 servings, but I only want to make 2 servings. Rather than manually changing the amount of each ingredient, I would instead convert the recipe using the Recipe Reducer.
 
 I would copy the link address from skinnytaste.com
 ``` 
@@ -58,7 +57,8 @@ https://www.skinnytaste.com/wprm_print/47600
 
 After that, I would use ELinks to convert the website from a .html file to a .txt file
 ``` 
-elinks -dump -no-numbering -no-references <link> > ranch_chicken_salad_original.txt
+elinks -dump -no-numbering -no-references https://www.skinnytaste.com/wprm_print/47600
+ > ranch_chicken_salad_original.txt
 ```
 
 Then, I would compile ```main.cpp```
@@ -76,5 +76,5 @@ The output file, ```ranch_chicken_salad_2_servings.txt```, would have the recipe
 
 Suppose that my brother and I like the salad so much that I decide to make the the salad again, but for my whole extended family, 10 people. To convert the recipe to make 10 servings, I can use the same steps as above, except when running the program, I would change the number of servings in the command line argument to 10.
 
-
+<br>
 Note: this project has no affiliation with skinnytaste.com.
