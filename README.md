@@ -27,8 +27,8 @@ sudo apt-get install elinks
 2. Find the recipe that you want to reduce from [SkinnyTaste.com](https://www.skinnytaste.com/)
 
 3. Right click the black "PRINT" on the recipe button and click "Copy link address"
-<img src="screenshots/print_button.png" width="415" align="left">
-<p><img src="screenshots/right_click.png" width="415" align="right"><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<img src="screenshots/print_button.png" width="410" align="left">
+<p><img src="screenshots/right_click.png" width="410" align="right"><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 4. Convert .html file to a .txt file using ELinks
 ``` 
