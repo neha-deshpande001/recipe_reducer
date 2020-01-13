@@ -8,13 +8,20 @@ The program reads the original recipe's intended servings through the input file
 The relationship between the ingredients and servings is proportional:
 
 ```
-(intended ingredient amount) / (original ingredient amount) = (intended servings) / (original servings)
+a/b = c/d
+```
+where
+```
+a = intended ingredient amount
+b = original ingredient amount
+c = intended servings
+d = original servings
 ```
 
 Multiplying both sides by the original ingredient amount yields an equation for finding the conversion factor for the intended ingredient amount, given 3 inputs.
 
 ```
-(intended ingredient amount) = (servings that you want) / (original servings) * (original ingredient amount)
+a = c/d * b
 ```
 
 
@@ -37,12 +44,12 @@ elinks -dump -no-numbering -no-references [input_link.html] > ranch_chicken_sala
 
 5. Download and unzip [this repository](https://github.com/neha-deshpande001/recipe_reducer/archive/master.zip)
 
-6. compile ```main.cpp```
+6. Compile ```main.cpp```
 ```
 g++ main.cpp -o main.out
 ```
 
-7. run the program with the following command line arguments
+7. Run the program with the following command line arguments
 ```
 ./main.out -i [input_file.txt] -o [output_file.txt] -servings [number]
 ```
